@@ -57,6 +57,7 @@ def penetration(i):
 
 def calculate(potential_function, state):
     # H is the Hamiltonian
+    # given by H = UT + V
     H = np.zeros((n, n), dtype=float)
     # U is the transformation matrix
     U = np.zeros((n, n), dtype=float)
@@ -78,20 +79,21 @@ def calculate(potential_function, state):
                 V[i][j] = 0
     temp = np.dot(U, np.dot(T, U))
     H = np.add(temp, V)
-    # print(H)
     w, v = np.linalg.eigh(H)
-    # print(w)
     # draw the potential line
     plt.plot(grid_points, potential)
-    # draw the wavefunction
+    # Change the calculated energy from atomic unit to cm^(-1)
     E = w[state] * 27.2114 * 8065.51
     print("The energy is", E, "cm^(-1)")
+    # draw the wavefunction
     plt.plot(grid_points, v[:, state])
     plt.ylim((-0.2, 0.2))
     plt.show()
 
 
 if __name__ == '__main__':
+    # Here are some demos
+    # Create new by changing the potential function and state
     # 1st excited state of a harmonic oscillator
     calculate(harmonic_oscillator, 1)
     # 2rd excited state of an infinite potential wall
