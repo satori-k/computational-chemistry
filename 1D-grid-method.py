@@ -53,6 +53,18 @@ def penetration(i):
         return 0.1
     else:
         return 0
+    
+def morse_potential(i):
+    # constants used for morse potential
+    r_e = 1.4010429487816605
+    De = 0.16610693624185088
+    a = 1.0552927696386496
+    r = grid_points[i]
+    # constants for rotation item. j is the rotation quantum number
+    j = 0
+    u = 918.6811103947497
+    # return De*(1-np.exp(-a*(r-r_e)))**2
+    return (j*(j+1)/(2*u*r))+De*(1-np.exp(-a*(r-r_e)))**2
 
 
 def calculate(potential_function, state):
@@ -81,13 +93,16 @@ def calculate(potential_function, state):
     H = np.add(temp, V)
     w, v = np.linalg.eigh(H)
     # draw the potential line
-    plt.plot(grid_points, potential)
+    plt.plot(grid_points, potential, label='potential')
     # Change the calculated energy from atomic unit to cm^(-1)
+    wave_potential = [w[state] for i in range(n)]
     E = w[state] * 27.2114 * 8065.51
     print("The energy is", E, "cm^(-1)")
     # draw the wavefunction
-    plt.plot(grid_points, v[:, state])
+    plt.plot(grid_points, v[:, state, label='wavefunction'])
+    plt.plot(grid_points, wave_potential, label='energy')
     plt.ylim((-0.2, 0.2))
+    plt.legend()
     plt.show()
 
 
